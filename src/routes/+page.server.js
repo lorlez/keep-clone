@@ -1,9 +1,9 @@
 //fetchare
-var photos = await fetch('https://jsonplaceholder.typicode.com/photos').then((r) => r.json());
+var photos = []; //await fetch('https://jsonplaceholder.typicode.com/photos').then((r) => r.json());
 
 export function load() {
 	let notes = [];
-	photos.slice(0, 4).forEach((p, i) => {
+	/*slice(0, 4).*/ photos.forEach((p, i) => {
 		notes.push({
 			title: p.title,
 			imgurl: p.url,

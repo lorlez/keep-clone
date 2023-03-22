@@ -29,35 +29,39 @@
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <div
-	class="ml-auto mr-auto mt-12 flex w-1/2 items-center justify-between rounded-lg border border-slate-300 bg-white drop-shadow-lg"
+	class="ml-auto mr-auto mt-12 flex w-1/2 items-center justify-between rounded-lg border border-slate-300 drop-shadow-lg"
 >
 	{#if isOpen}
-		<form>
-			<div class="flex justify-between">
-				<input bind:value={title} type="text" placeholder="Titolo" />
-				<Button size="12" text="Nuovo elenco">
+		<form class="overflow-hidden">
+			<div class="flex w-full justify-between">
+				<input bind:value={title} type="text" placeholder="Titolo" class="shadow-none" />
+				<Button>
 					<Pin color="grey" size="28" />
 				</Button>
 			</div>
 			<!-- svelte-ignore a11y-autofocus -->
-			<textarea bind:value={body} autofocus />
+			<textarea bind:value={body} autofocus placeholder="Scrivi una nota..." />
 			<div class="flex justify-between">
-				<Button size="12" text="Nuovo elenco">
+				<Button>
 					<Image color="grey" size="28" />
 				</Button>
-				<Button size="12" text="Nuovo elenco" callback={handleClick}>Chiudi</Button>
+				<Button
+					callback={() => {
+						if (body != '') handleClick();
+					}}>Chiudi</Button
+				>
 			</div>
 		</form>
 	{:else}
 		<p on:click={toggleForm} class="ml-2 hover:cursor-text">Scrivi una nota...</p>
 		<div class="flex">
-			<Button size="12" text="Nuovo elenco">
+			<Button>
 				<Check color="grey" size="28" />
 			</Button>
-			<Button size="12" text="Nuova nota con disegno">
+			<Button>
 				<Brush color="grey" size="28" />
 			</Button>
-			<Button size="12" text="Nuova immagine">
+			<Button>
 				<Image color="grey" size="28" />
 			</Button>
 		</div>

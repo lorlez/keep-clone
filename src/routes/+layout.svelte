@@ -15,8 +15,9 @@
 	import Pen from 'svelte-material-icons/Pen.svelte';
 	import Archive from 'svelte-material-icons/ArchiveArrowDownOutline.svelte';
 	import Trash from 'svelte-material-icons/Delete.svelte';
+	import Note from 'svelte-material-icons/Note.svelte';
 
-	let currentPage = 'home';
+	let currentPage = 'Note';
 
 	const changeActive = (e) => {
 		currentPage = e.detail;
@@ -24,42 +25,45 @@
 </script>
 
 <header class="flex h-16 items-center justify-between border-b border-b-slate-300 bg-white">
-	<div class="flex bg-blue-300">
-		<Button size="128" text="A test icon">
+	<div class="w-30 flex items-center">
+		<Button>
 			<Menu size="30" color="grey" />
 		</Button>
-		<div class="items-center">
-			<h1>TITLE</h1>
+		{#if currentPage === 'Note'}
+			<Note color="#dbde43" size="40" />
+		{/if}
+		<div class="flex items-center">
+			<h1 class="text-lg font-bold text-slate-500">{currentPage === 'Note' ? 'Keep' : currentPage}</h1>
 		</div>
 	</div>
-	<div class="flex rounded-lg bg-slate-100">
-		<Button size="128" text="A test icon">
+	<div class="flex w-1/2 justify-between rounded-lg bg-slate-100">
+		<Button>
 			<Search size="30" color="grey" />
 		</Button>
-		<input class="bg-transparent" type="text" placeholder="Cerca" />
-		<Button size="128" text="A test icon">
+		<input class="flex-1 border-none bg-transparent" type="text" placeholder="Cerca" />
+		<Button>
 			<Close size="30" color="grey" />
 		</Button>
 	</div>
-	<div class="flex bg-yellow-300">
-		<Button size="128" text="A test icon">
+	<div class="flex">
+		<Button>
 			<Reload size="30" color="grey" />
 		</Button>
-		<Button size="128" text="A test icon">
+		<Button>
 			<Grid size="30" color="grey" />
 		</Button>
-		<Button size="128" text="A test icon">
+		<Button>
 			<Settings size="30" color="grey" />
 		</Button>
-		<Button size="128" text="A test icon">
+		<Button>
 			<App size="30" color="grey" />
 		</Button>
-		<Button size="128" text="A test icon">
+		<Button>
 			<User size="30" color="grey" />
 		</Button>
 	</div>
 </header>
-<div class="flex h-screen">
+<div class="h-display flex">
 	<aside class="w-64 bg-white">
 		<div class="m-t-12">
 			<Bar isActive={currentPage === 'Note'} name="Note" url="./" on:barclick={changeActive}>
@@ -82,7 +86,7 @@
 			<a href="https://ssl.gstatic.com/keep/licenses/web_client_licenses.txt">Licenze open-source</a>
 		</div>
 	</aside>
-	<main class="flex-1 bg-white">
+	<main class="flex-1 overflow-y-scroll bg-white">
 		<slot />
 	</main>
 </div>
