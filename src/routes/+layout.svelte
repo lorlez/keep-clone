@@ -8,30 +8,18 @@
 	import Grid from 'svelte-material-icons/Grid.svelte';
 	import Settings from 'svelte-material-icons/Cog.svelte';
 	import App from 'svelte-material-icons/Apps.svelte';
+	import Reload from 'svelte-material-icons/Reload.svelte';
+	import User from 'svelte-material-icons/Account.svelte';
+	import Lightbulb from 'svelte-material-icons/LightbulbOutline.svelte';
+	import Bell from 'svelte-material-icons/BellOutline.svelte';
+	import Pen from 'svelte-material-icons/Pen.svelte';
+	import Archive from 'svelte-material-icons/ArchiveArrowDownOutline.svelte';
+	import Trash from 'svelte-material-icons/Delete.svelte';
 
-	let notes = [
-		{
-			title: 'Titolo test 1',
-			id: 0,
-			body: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident veniam error necessitatibus',
-			imgurl: 'https://via.placeholder.com/600/92c952'
-		},
-		{
-			title: 'Titolo test 2',
-			id: 1,
-			body: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident veniam error necessitatibus',
-			imgurl: 'https://via.placeholder.com/600/92c952'
-		},
-		{
-			title: 'Titolo test 3',
-			id: 2,
-			body: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident veniam error necessitatibus',
-			imgurl: 'https://via.placeholder.com/600/92c952'
-		}
-	];
+	let currentPage = 'home';
 
-	const handleInput = (str) => {
-		notes = notes.filter((note) => note.body.includes(str));
+	const changeActive = (e) => {
+		currentPage = e.detail;
 	};
 </script>
 
@@ -55,7 +43,7 @@
 	</div>
 	<div class="flex bg-yellow-300">
 		<Button size="128" text="A test icon">
-			<Menu size="30" color="grey" />
+			<Reload size="30" color="grey" />
 		</Button>
 		<Button size="128" text="A test icon">
 			<Grid size="30" color="grey" />
@@ -67,21 +55,27 @@
 			<App size="30" color="grey" />
 		</Button>
 		<Button size="128" text="A test icon">
-			<Menu size="30" color="grey" />
+			<User size="30" color="grey" />
 		</Button>
 	</div>
 </header>
 <div class="flex h-screen">
 	<aside class="w-64 bg-white">
 		<div class="m-t-12">
-			<Bar name="Test" url="">
-				<Settings size="30" color="grey" />
+			<Bar isActive={currentPage === 'Note'} name="Note" url="./" on:barclick={changeActive}>
+				<Lightbulb size="30" color="grey" />
 			</Bar>
-			<Bar name="Test">
-				<Settings size="30" color="grey" />
+			<Bar isActive={currentPage === 'Promemoria'} name="Promemoria" url="reminders" on:barclick={changeActive}>
+				<Bell size="30" color="grey" />
 			</Bar>
-			<Bar name="Test">
-				<Settings size="30" color="grey" />
+			<Bar name="Modifica Etichette" redirect={false} on:barclick={changeActive}>
+				<Pen size="30" color="grey" />
+			</Bar>
+			<Bar isActive={currentPage === 'Archivio'} name="Archivio" url="archive" on:barclick={changeActive}>
+				<Archive size="30" color="grey" />
+			</Bar>
+			<Bar isActive={currentPage === 'Cestino'} name="Cestino" url="trash" on:barclick={changeActive}>
+				<Trash size="30" color="grey" />
 			</Bar>
 		</div>
 		<div class="absolute bottom-0">
