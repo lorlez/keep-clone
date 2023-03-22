@@ -4,6 +4,9 @@
 	import Brush from 'svelte-material-icons/BrushOutline.svelte';
 	import Image from 'svelte-material-icons/Image.svelte';
 	import Note from '../components/Note.svelte';
+
+	export let data;
+	let notes = data.notes;
 </script>
 
 <div class="w-display h-display">
