@@ -5,15 +5,12 @@
 
 	export let data;
 
-	console.log('data is ', data);
-
 	let mynotes = [];
 	let datanotes = data.notes;
 	let notes = [];
 
 	onMount(() => {
 		mynotes = JSON.parse(window.localStorage.getItem('mynotes') || '[]');
-		console.log('onMount my notes are: ', notes);
 	});
 
 	$: {
@@ -32,15 +29,24 @@
 		});
 
 		window.localStorage.setItem('mynotes', JSON.stringify(mynotes));
-		console.log('mynotes is now ', mynotes);
-
 		datanotes = datanotes.filter((n) => {
 			return n.id != e.detail;
 		});
-
-		console.log('datanotes is now ', datanotes);
 	};
 
+	const togglePin = (e) => {
+		console.log('Inside toggle pin');
+		mynotes = mynotes.map((n) => {
+			if (n.id === e.detail) return { ...n, pinned: !n.pinned };
+			else return n;
+		});
+		window.localStorage.setItem('mynotes', JSON.stringify(mynotes));
+
+		datanotes = datanotes.map((n) => {
+			if (n.id === e.detail) return { ...n, pinned: !n.pinned };
+			else return n;
+		});
+	};
 	const clearStore = () => {
 		mynotes = [];
 		window.localStorage.setItem('mynotes', JSON.stringify([]));
@@ -56,7 +62,7 @@
 		{/if}
 		{#each notes as note (note.id)}
 			{#if note.pinned}
-				<Note {...note} on:notedel={deleteNote} />
+				<Note {...note} on:notedel={deleteNote} on:notepin={togglePin} />
 			{/if}
 		{/each}
 	</div>
@@ -66,7 +72,7 @@
 		{/if}
 		{#each notes as note (note.id)}
 			{#if !note.pinned}
-				<Note {...note} on:notedel={deleteNote} />
+				<Note {...note} on:notedel={deleteNote} on:notepin={togglePin} />
 			{/if}
 		{/each}
 	</div>

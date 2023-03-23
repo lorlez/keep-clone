@@ -13,21 +13,28 @@
 	import { createEventDispatcher } from 'svelte';
 	let dispatch = createEventDispatcher();
 
-	const handleClick = () => {
-		console.log('clicked');
+	const handleDel = () => {
 		dispatch('notedel', id);
+	};
+
+	const handlePin = () => {
+		console.log('inside handle pin');
+		dispatch('notepin', id);
 	};
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <div
 	class="mb-4 overflow-hidden rounded-lg border border-slate-300 bg-white"
-	on:click={() => {
+	on:click|capture={() => {
 		if (!isEditing) isEditing = true;
 	}}
 >
-	<div class="right-0 float-right w-14 bg-blue-300">
-		<Button callback={handleClick}>
+	<div class="right-0 float-right flex w-max bg-blue-300">
+		<Button callback={handleDel}>
+			<Trash color="gray" size="28" />
+		</Button>
+		<Button callback={handlePin}>
 			<Pin color={pinned ? 'black' : 'gray'} size="28" />
 		</Button>
 	</div>
@@ -42,19 +49,17 @@
 	{/if}
 	<div class="flex">
 		{#if isEditing}
-			<textarea bind:value={body} />
+			<textarea class="flex-1" bind:value={body} />
 		{:else}
 			<p>{body}</p>
 		{/if}
 		{#if isEditing}
 			<Button
 				callback={() => {
-					console.log('Closing edit');
 					isEditing = false;
-					console.log(isEditing);
 				}}
 			>
-				<Trash size="30" color="grey" />
+				<h1>CHIUDI</h1>
 			</Button>
 		{/if}
 	</div>

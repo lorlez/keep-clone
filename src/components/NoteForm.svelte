@@ -18,7 +18,6 @@
 	let id = 0;
 
 	const handleClose = () => {
-		console.log('clicked');
 		if (body != '') {
 			dispatch('noteadd', { title, body, imgurl, pinned, id: Math.random() });
 		}
@@ -35,7 +34,6 @@
 	};
 
 	const togglePin = () => {
-		console.log('changed pinned');
 		pinned = !pinned;
 	};
 </script>

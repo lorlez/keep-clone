@@ -36,7 +36,7 @@
 			<h1 class="text-lg font-bold text-slate-500">{currentPage === 'Note' ? 'Keep' : currentPage}</h1>
 		</div>
 	</div>
-	<div class="flex w-1/2 justify-between rounded-lg bg-slate-100">
+	<div class="flex h-12 w-1/2 items-center justify-between rounded-lg bg-slate-100">
 		<Button>
 			<Search size="30" color="grey" />
 		</Button>
@@ -63,8 +63,8 @@
 		</Button>
 	</div>
 </header>
-<div class="h-display flex">
-	<aside class="w-64 bg-white">
+<div class="flex">
+	<aside class="flex w-64 flex-col justify-between bg-white">
 		<div class="m-t-12">
 			<Bar isActive={currentPage === 'Note'} name="Note" url="./" on:barclick={changeActive}>
 				<Lightbulb size="30" color="grey" />
@@ -82,11 +82,11 @@
 				<Trash size="30" color="grey" />
 			</Bar>
 		</div>
-		<div class="absolute bottom-0">
+		<div class="mb-4 ml-4 text-sm">
 			<a href="https://ssl.gstatic.com/keep/licenses/web_client_licenses.txt">Licenze open-source</a>
 		</div>
 	</aside>
-	<main class="flex-1 overflow-y-scroll bg-white">
+	<main class="h-screen flex-1 overflow-y-scroll bg-white">
 		<slot />
 	</main>
 </div>
