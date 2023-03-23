@@ -43,13 +43,13 @@
 	{/if}
 
 	{#if isEditing}
-		<input class="h-12" type="text" bind:value={title} />
+		<input class="w-full" type="text" bind:value={title} placeholder="Titolo" />
 	{:else if title}
 		<h1 class="text-lg font-bold">{title}</h1>
 	{/if}
 	<div class="flex">
 		{#if isEditing}
-			<textarea class="flex-1" bind:value={body} />
+			<textarea class="flex-1" bind:value={body} placeholder="Nota" />
 		{:else}
 			<p>{body}</p>
 		{/if}
@@ -57,6 +57,9 @@
 			<Button
 				callback={() => {
 					isEditing = false;
+					if (body === '' && title === '') {
+						handleDel();
+					}
 				}}
 			>
 				<h1>CHIUDI</h1>

@@ -40,7 +40,7 @@
 		<Button>
 			<Search size="30" color="grey" />
 		</Button>
-		<input class="flex-1 border-none bg-transparent" type="text" placeholder="Cerca" />
+		<input class="flex-1 border-none bg-transparent focus:outline-none" type="text" placeholder="Cerca" />
 		<Button>
 			<Close size="30" color="grey" />
 		</Button>
