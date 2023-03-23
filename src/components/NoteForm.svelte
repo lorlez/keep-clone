@@ -2,7 +2,7 @@
 	import Check from 'svelte-material-icons/CheckboxMarkedoutline.svelte';
 	import Brush from 'svelte-material-icons/BrushOutline.svelte';
 	import Image from 'svelte-material-icons/Image.svelte';
-	import Pin from 'svelte-material-icons/PinOutline.svelte';
+	import Pin from 'svelte-material-icons/Pin.svelte';
 
 	import Button from '../components/Button.svelte';
 
@@ -14,29 +14,42 @@
 	let title = '';
 	let body = '';
 	let imgurl = '';
+	let pinned = false;
 	let id = 0;
 
-	const handleClick = () => {
+	const handleClose = () => {
 		console.log('clicked');
-		dispatch('noteadd', { title, body, imgurl, id: Math.random() });
+		if (body != '') {
+			dispatch('noteadd', { title, body, imgurl, pinned, id: Math.random() });
+		}
+		title = '';
+		body = '';
+		imgurl = '';
+		pinned = false;
+		id = 0;
 		toggleForm();
 	};
 
 	const toggleForm = () => {
 		isOpen = !isOpen;
 	};
+
+	const togglePin = () => {
+		console.log('changed pinned');
+		pinned = !pinned;
+	};
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <div
-	class="ml-auto mr-auto mt-12 flex w-1/2 items-center justify-between rounded-lg border border-slate-300 drop-shadow-lg"
+	class="mb-2 ml-auto mr-auto mt-12 flex w-1/2 items-center justify-between rounded-lg border border-slate-300 drop-shadow-lg"
 >
 	{#if isOpen}
 		<form class="overflow-hidden">
 			<div class="flex w-full justify-between">
 				<input bind:value={title} type="text" placeholder="Titolo" class="shadow-none" />
-				<Button>
-					<Pin color="grey" size="28" />
+				<Button callback={togglePin}>
+					<Pin color={pinned ? 'black' : 'gray'} size="28" />
 				</Button>
 			</div>
 			<!-- svelte-ignore a11y-autofocus -->
@@ -45,11 +58,9 @@
 				<Button>
 					<Image color="grey" size="28" />
 				</Button>
-				<Button
-					callback={() => {
-						if (body != '') handleClick();
-					}}>Chiudi</Button
-				>
+				<Button callback={handleClose}>
+					<h1>Chiudi</h1>
+				</Button>
 			</div>
 		</form>
 	{:else}
