@@ -3,6 +3,7 @@
 	import Brush from 'svelte-material-icons/BrushOutline.svelte';
 	import Image from 'svelte-material-icons/Image.svelte';
 	import Pin from 'svelte-material-icons/Pin.svelte';
+	import DelImage from 'svelte-material-icons/ImageOff.svelte';
 
 	import Button from '../components/Button.svelte';
 
@@ -16,16 +17,18 @@
 	let imgurl = '';
 	let pinned = false;
 	let id = 0;
+	let imgfile = null;
 
 	const handleClose = () => {
 		if (body != '' || title != '' || imgurl != '') {
-			dispatch('noteadd', { title, body, imgurl, pinned, id: Math.random() });
+			dispatch('noteadd', { title, body, imgfile, pinned, id: Math.random() });
 		}
 		title = '';
 		body = '';
 		imgurl = '';
 		pinned = false;
 		id = 0;
+		imgfile = null;
 		toggleForm();
 	};
 
@@ -37,9 +40,15 @@
 		pinned = !pinned;
 	};
 
-	const handleChange = (img) => {
-		imgurl = URL.createObjectURL(img);
-		console.log(imgurl);
+	const addImg = (e) => {
+		imgfile = e.target.files[0];
+		imgurl = URL.createObjectURL(imgfile);
+	};
+
+	const delImg = () => {
+		URL.revokeObjectURL(imgurl);
+		imgurl = '';
+		imgfile = null;
 	};
 </script>
 
@@ -50,6 +59,9 @@
 	{#if isOpen}
 		<form class="w-full overflow-hidden">
 			{#if imgurl}
+				<Button callback={delImg}>
+					<DelImage color="gray" size="28" />
+				</Button>
 				<img src={imgurl} alt="BOH" />
 			{/if}
 			<div class="flex justify-between">
@@ -64,7 +76,7 @@
 				<Button>
 					<Image color="grey" size="28" />
 				</Button>
-				<input type="file" on:change={(e) => handleChange(e.target.files[0])} />
+				<input type="file" on:change={(e) => addImg(e)} />
 				<Button callback={handleClose}>
 					<h1>Chiudi</h1>
 				</Button>

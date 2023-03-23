@@ -2,24 +2,26 @@
 	import Note from '../components/Note.svelte';
 	import NoteForm from '../components/NoteForm.svelte';
 	import { onMount } from 'svelte';
+	import { globalNotes, filteredNotes } from '../stores/NoteStore';
+	import { derived } from 'svelte/store';
 
 	export let data;
 
 	let mynotes = [];
 	let datanotes = data.notes;
-	let notes = [];
 
 	onMount(() => {
 		mynotes = JSON.parse(window.localStorage.getItem('mynotes') || '[]');
 	});
 
 	$: {
-		notes = [...mynotes, ...datanotes];
-		console.log(notes);
+		globalNotes.set([...mynotes, ...datanotes]);
 	}
 
 	const addNote = (e) => {
+		console.log('I just added a note, imgfile is: ', e.detail.imgfile);
 		mynotes = [e.detail, ...mynotes];
+		console.log('mynotes stringified is', JSON.stringify(mynotes));
 		window.localStorage.setItem('mynotes', JSON.stringify(mynotes));
 	};
 
@@ -57,20 +59,20 @@
 <div class="w-display h-display">
 	<NoteForm on:noteadd={addNote} />
 	<div class="ml-auto mr-auto w-1/2">
-		{#if notes.filter((n) => n.pinned).length > 0}
+		{#if $globalNotes.filter((n) => n.pinned).length > 0}
 			<h1 class="ml-2 mb-2 text-xs font-bold">APPUNTATE</h1>
 		{/if}
-		{#each notes as note (note.id)}
+		{#each $globalNotes as note (note.id)}
 			{#if note.pinned}
 				<Note {...note} on:notedel={deleteNote} on:notepin={togglePin} />
 			{/if}
 		{/each}
 	</div>
 	<div class="ml-auto mr-auto w-1/2">
-		{#if notes.filter((n) => n.pinned).length > 0 && notes.filter((n) => !n.pinned).length > 0}
+		{#if $globalNotes.filter((n) => n.pinned).length > 0 && $globalNotes.filter((n) => !n.pinned).length > 0}
 			<h1 class="ml-2 mb-2 text-xs font-bold">ALTRE</h1>
 		{/if}
-		{#each notes as note (note.id)}
+		{#each $globalNotes as note (note.id)}
 			{#if !note.pinned}
 				<Note {...note} on:notedel={deleteNote} on:notepin={togglePin} />
 			{/if}

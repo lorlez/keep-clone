@@ -2,11 +2,21 @@
 	import Button from './Button.svelte';
 	import Pin from 'svelte-material-icons/Pin.svelte';
 	import Trash from 'svelte-material-icons/Delete.svelte';
+	import DelImage from 'svelte-material-icons/ImageOff.svelte';
+
+	import { onMount } from 'svelte';
+	onMount(() => {
+		if (imgfile) {
+			console.log(imgfile);
+			imgurl = URL.createObjectURL(imgfile);
+		}
+	});
 
 	export let id = 0;
 	export let title = '';
 	export let body = '';
 	export let imgurl = '';
+	export let imgfile = null;
 	export let pinned = false;
 	let isEditing = false;
 
@@ -39,7 +49,15 @@
 		</Button>
 	</div>
 	{#if imgurl}
-		<img src={imgurl} alt="content missing" />
+		<Button
+			callback={() => {
+				imgurl = '';
+				imgfile = null;
+			}}
+		>
+			<DelImage color="gray" size="28" />
+		</Button>
+		<img class="w-full" src={imgurl} alt="content missing" />
 	{/if}
 
 	{#if isEditing}

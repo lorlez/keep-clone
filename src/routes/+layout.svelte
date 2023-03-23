@@ -1,5 +1,7 @@
 <script>
 	import '../app.postcss';
+	import { globalNotes } from '../stores/NoteStore';
+	import { filteredNotes } from '../stores/NoteStore';
 	import Bar from '../components/Bar.svelte';
 	import Button from '../components/Button.svelte';
 	import Menu from 'svelte-material-icons/Menu.svelte';
@@ -22,6 +24,25 @@
 	const changeActive = (e) => {
 		currentPage = e.detail;
 	};
+
+	/*const handleInput = (e) => {
+		filteredNotes.set(
+			$globalNotes.filter((n) => {
+				console.log(
+					'n.body is',
+					n.body,
+					'e.target.value is ',
+					e.target.value,
+					'includes si ',
+					n.body.includes(e.target.value)
+				);
+				return (
+					n.body.toLowerCase().includes(e.target.value.toLowerCase()) ||
+					n.title.toLowerCase().includes(e.target.value.toLowerCase())
+				);
+			})
+		);
+	};*/
 </script>
 
 <header class="flex h-16 items-center justify-between border-b border-b-slate-300 bg-white">
