@@ -11,12 +11,19 @@
 	let dispatch = createEventDispatcher();
 
 	let isOpen = false;
+	let isDragging = false;
 
 	let title = '';
 	let body = '';
 	let imgurl = '';
 	let pinned = false;
 	let id = 0;
+
+	const handleDrop = (e) => {
+		isOpen = true;
+		isDragging = false;
+		addImg(e.dataTransfer.files[0]);
+	};
 
 	const handleClose = () => {
 		console.log('handling CLOSE');
@@ -39,8 +46,7 @@
 		pinned = !pinned;
 	};
 
-	const addImg = (e) => {
-		let file = e.target.files[0];
+	const addImg = (file) => {
 		const fr = new FileReader();
 		fr.readAsDataURL(file);
 		fr.addEventListener('load', () => {
@@ -56,9 +62,18 @@
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <div
+	on:dragover|preventDefault={() => {
+		console.log('DRAGGING OVER');
+		isDragging = true;
+	}}
+	on:dragleave|preventDefault={() => {
+		console.log('LEAVING DRAG');
+		isDragging = false;
+	}}
+	on:drop|preventDefault={handleDrop}
 	class="mb-2 ml-auto mr-auto mt-12 flex w-1/2 items-center justify-between rounded-lg border border-slate-300 drop-shadow-lg"
 >
-	{#if isOpen}
+	{#if isOpen && !isDragging}
 		<form class="w-full overflow-hidden">
 			{#if imgurl}
 				<Button callback={delImg}>
@@ -78,12 +93,14 @@
 				<Button>
 					<Image color="grey" size="28" />
 				</Button>
-				<input type="file" on:change={addImg} />
+				<input type="file" on:change={(e) => addImg(e.target.files[0])} />
 				<Button callback={handleClose}>
 					<h1>Chiudi</h1>
 				</Button>
 			</div>
 		</form>
+	{:else if isDragging}
+		<div class="m-4 w-full border-2 border-dashed border-slate-300  text-center">TRASCINA IMMAGINE QUI</div>
 	{:else}
 		<p on:click={toggleForm} class="ml-2 h-full flex-1 hover:cursor-text">Scrivi una nota...</p>
 		<div class="flex">
