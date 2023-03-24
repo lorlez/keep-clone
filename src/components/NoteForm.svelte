@@ -83,7 +83,7 @@
 			</div>
 		</form>
 	{:else}
-		<p on:click={toggleForm} class="ml-2 flex-1 hover:cursor-text">Scrivi una nota...</p>
+		<p on:click={toggleForm} class="ml-2 h-full flex-1 hover:cursor-text">Scrivi una nota...</p>
 		<div class="flex">
 			<Button>
 				<Check color="grey" size="28" />

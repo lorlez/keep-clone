@@ -3,7 +3,6 @@
 	import NoteForm from '../components/NoteForm.svelte';
 	import { onMount } from 'svelte';
 	import { globalNotes, filteredNotes } from '../stores/NoteStore';
-	import { derived } from 'svelte/store';
 
 	export let data;
 
@@ -59,20 +58,20 @@
 <div class="w-display h-display">
 	<NoteForm on:noteadd={addNote} />
 	<div class="ml-auto mr-auto w-1/2">
-		{#if $globalNotes.filter((n) => n.pinned).length > 0}
+		{#if $filteredNotes.filter((n) => n.pinned).length > 0}
 			<h1 class="ml-2 mb-2 text-xs font-bold">APPUNTATE</h1>
 		{/if}
-		{#each $globalNotes as note (note.id)}
+		{#each $filteredNotes as note (note.id)}
 			{#if note.pinned}
 				<Note {...note} on:notedel={deleteNote} on:notepin={togglePin} />
 			{/if}
 		{/each}
 	</div>
 	<div class="ml-auto mr-auto w-1/2">
-		{#if $globalNotes.filter((n) => n.pinned).length > 0 && $globalNotes.filter((n) => !n.pinned).length > 0}
+		{#if $filteredNotes.filter((n) => n.pinned).length > 0 && $filteredNotes.filter((n) => !n.pinned).length > 0}
 			<h1 class="ml-2 mb-2 text-xs font-bold">ALTRE</h1>
 		{/if}
-		{#each $globalNotes as note (note.id)}
+		{#each $filteredNotes as note (note.id)}
 			{#if !note.pinned}
 				<Note {...note} on:notedel={deleteNote} on:notepin={togglePin} />
 			{/if}

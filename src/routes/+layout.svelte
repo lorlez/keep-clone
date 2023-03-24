@@ -1,7 +1,4 @@
 <script>
-	import '../app.postcss';
-	import { globalNotes } from '../stores/NoteStore';
-	import { filteredNotes } from '../stores/NoteStore';
 	import Bar from '../components/Bar.svelte';
 	import Button from '../components/Button.svelte';
 	import Menu from 'svelte-material-icons/Menu.svelte';
@@ -19,30 +16,31 @@
 	import Trash from 'svelte-material-icons/Delete.svelte';
 	import Note from 'svelte-material-icons/Note.svelte';
 
+	import '../app.postcss';
+	import { globalNotes, filteredNotes } from '../stores/NoteStore';
+	import { derived } from 'svelte/store';
+
+	let searchQuery = '';
+
 	let currentPage = 'Note';
 
 	const changeActive = (e) => {
 		currentPage = e.detail;
 	};
 
-	/*const handleInput = (e) => {
+	const updateFiltered = (srcq) => {
 		filteredNotes.set(
 			$globalNotes.filter((n) => {
-				console.log(
-					'n.body is',
-					n.body,
-					'e.target.value is ',
-					e.target.value,
-					'includes si ',
-					n.body.includes(e.target.value)
-				);
-				return (
-					n.body.toLowerCase().includes(e.target.value.toLowerCase()) ||
-					n.title.toLowerCase().includes(e.target.value.toLowerCase())
-				);
+				return n.body.toLowerCase().includes(srcq.toLowerCase()) || n.title.toLowerCase().includes(srcq.toLowerCase());
 			})
 		);
-	};*/
+	};
+
+	export const derivedNotes = derived(globalNotes, () => {
+		updateFiltered(searchQuery);
+	});
+
+	$derivedNotes;
 </script>
 
 <header class="flex h-16 items-center justify-between border-b border-b-slate-300 bg-white">
@@ -61,7 +59,13 @@
 		<Button>
 			<Search size="30" color="grey" />
 		</Button>
-		<input class="flex-1 border-none bg-transparent focus:outline-none" type="text" placeholder="Cerca" />
+		<input
+			class="flex-1 border-none bg-transparent focus:outline-none"
+			type="text"
+			placeholder="Cerca"
+			on:input={(e) => updateFiltered(e.target.value)}
+			bind:value={searchQuery}
+		/>
 		<Button>
 			<Close size="30" color="grey" />
 		</Button>
