@@ -17,18 +17,17 @@
 	let imgurl = '';
 	let pinned = false;
 	let id = 0;
-	let imgfile = null;
 
 	const handleClose = () => {
+		console.log('handling CLOSE');
 		if (body != '' || title != '' || imgurl != '') {
-			dispatch('noteadd', { title, body, imgfile, pinned, id: Math.random() });
+			dispatch('noteadd', { title, body, imgurl, pinned, id: Math.random() });
 		}
 		title = '';
 		body = '';
 		imgurl = '';
 		pinned = false;
 		id = 0;
-		imgfile = null;
 		toggleForm();
 	};
 
@@ -41,14 +40,17 @@
 	};
 
 	const addImg = (e) => {
-		imgfile = e.target.files[0];
-		imgurl = URL.createObjectURL(imgfile);
+		let file = e.target.files[0];
+		const fr = new FileReader();
+		fr.readAsDataURL(file);
+		fr.addEventListener('load', () => {
+			imgurl = fr.result;
+			console.log('Image url is ', imgurl);
+		});
 	};
 
 	const delImg = () => {
-		URL.revokeObjectURL(imgurl);
 		imgurl = '';
-		imgfile = null;
 	};
 </script>
 
@@ -76,7 +78,7 @@
 				<Button>
 					<Image color="grey" size="28" />
 				</Button>
-				<input type="file" on:change={(e) => addImg(e)} />
+				<input type="file" on:change={addImg} />
 				<Button callback={handleClose}>
 					<h1>Chiudi</h1>
 				</Button>

@@ -18,9 +18,8 @@
 	}
 
 	const addNote = (e) => {
-		console.log('I just added a note, imgfile is: ', e.detail.imgfile);
+		console.log('adding NOTE');
 		mynotes = [e.detail, ...mynotes];
-		console.log('mynotes stringified is', JSON.stringify(mynotes));
 		window.localStorage.setItem('mynotes', JSON.stringify(mynotes));
 	};
 

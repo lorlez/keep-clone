@@ -5,18 +5,12 @@
 	import DelImage from 'svelte-material-icons/ImageOff.svelte';
 
 	import { onMount } from 'svelte';
-	onMount(() => {
-		if (imgfile) {
-			console.log(imgfile);
-			imgurl = URL.createObjectURL(imgfile);
-		}
-	});
+	onMount(() => {});
 
 	export let id = 0;
 	export let title = '';
 	export let body = '';
 	export let imgurl = '';
-	export let imgfile = null;
 	export let pinned = false;
 	let isEditing = false;
 
@@ -52,7 +46,6 @@
 		<Button
 			callback={() => {
 				imgurl = '';
-				imgfile = null;
 			}}
 		>
 			<DelImage color="gray" size="28" />
