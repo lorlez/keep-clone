@@ -71,7 +71,7 @@
 		isDragging = false;
 	}}
 	on:drop|preventDefault={handleDrop}
-	class="mb-2 ml-auto mr-auto mt-12 flex w-1/2 items-center justify-between rounded-lg border border-slate-300 drop-shadow-lg"
+	class="mb-2 ml-auto mr-auto mt-12 flex max-w-xl items-center justify-between rounded-lg border border-slate-300 drop-shadow-lg"
 >
 	{#if isOpen && !isDragging}
 		<form class="w-full overflow-hidden">

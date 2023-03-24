@@ -49,13 +49,13 @@
 	};
 </script>
 
-<div class="w-display h-display">
+<div class="ml-auto mr-auto">
 	<NoteForm on:noteadd={addNote} />
 
 	{#if $filteredNotes.filter((n) => n.pinned).length > 0}
 		<h1 class="ml-12 mb-2 text-xs font-bold">APPUNTATE</h1>
 	{/if}
-	<div class="ml-12 mr-12 inline-grid grid-cols-4">
+	<div class="ml-12 mr-12 grid grid-cols-4">
 		{#each $filteredNotes as note (note.id)}
 			{#if note.pinned}
 				<Note {...note} on:notedel={deleteNote} on:notepin={togglePin} />
@@ -66,7 +66,7 @@
 	{#if $filteredNotes.filter((n) => n.pinned).length > 0 && $filteredNotes.filter((n) => !n.pinned).length > 0}
 		<h1 class="ml-12 mb-2 text-xs font-bold">ALTRE</h1>
 	{/if}
-	<div class="ml-12 mr-12 inline-grid grid-cols-4">
+	<div class="ml-12 mr-12 grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 2xl:grid-cols-4">
 		{#each $filteredNotes as note (note.id)}
 			{#if !note.pinned}
 				<Note {...note} on:notedel={deleteNote} on:notepin={togglePin} />

@@ -29,7 +29,7 @@
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <div
-	class="m-4 overflow-hidden rounded-lg border border-slate-300 bg-white"
+	class="m-4 w-64 overflow-hidden rounded-lg border border-slate-300 bg-white"
 	on:click|capture={() => {
 		if (!isEditing) isEditing = true;
 	}}

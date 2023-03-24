@@ -13,8 +13,11 @@
 </script>
 
 <a class:pointer-events-none={!redirect} href={url} on:click={handleClick}>
-	<div class:bg-yellow-200={isActive} class="flex h-12 items-center rounded-r-full bg-white hover:bg-slate-400 ">
+	<div
+		class:bg-yellow-200={isActive}
+		class="flex h-12 items-center rounded-r-full rounded-l-full bg-white pl-2 hover:bg-slate-400 sm:rounded-l-none "
+	>
 		<slot />
-		<p class="ml-2">{name}</p>
+		<p class="ml-2 hidden sm:block">{name}</p>
 	</div>
 </a>

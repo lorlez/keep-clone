@@ -55,41 +55,45 @@
 			<h1 class="text-lg font-bold text-slate-500">{currentPage === 'Note' ? 'Keep' : currentPage}</h1>
 		</div>
 	</div>
-	<div class="flex h-12 w-1/2 items-center justify-between rounded-lg bg-slate-100">
-		<Button>
-			<Search size="30" color="grey" />
-		</Button>
-		<input
-			class="flex-1 border-none bg-transparent focus:outline-none"
-			type="text"
-			placeholder="Cerca"
-			on:input={(e) => updateFiltered(e.target.value)}
-			bind:value={searchQuery}
-		/>
-		<Button>
-			<Close size="30" color="grey" />
-		</Button>
-	</div>
-	<div class="flex">
-		<Button>
-			<Reload size="30" color="grey" />
-		</Button>
-		<Button>
-			<Grid size="30" color="grey" />
-		</Button>
-		<Button>
-			<Settings size="30" color="grey" />
-		</Button>
-		<Button>
-			<App size="30" color="grey" />
-		</Button>
-		<Button>
-			<User size="30" color="grey" />
-		</Button>
+	<div class="flex flex-1 items-center justify-end md:justify-between">
+		<div class="ml-24 flex h-12 w-auto max-w-2xl items-center justify-between rounded-lg md:w-full md:bg-slate-100">
+			<Button>
+				<Search size="30" color="grey" />
+			</Button>
+			<input
+				class="hidden flex-1 border-none bg-transparent focus:outline-none md:block"
+				type="text"
+				placeholder="Cerca"
+				on:input={(e) => updateFiltered(e.target.value)}
+				bind:value={searchQuery}
+			/>
+			<div class="hidden md:block">
+				<Button>
+					<Close size="30" color="grey" />
+				</Button>
+			</div>
+		</div>
+		<div class="flex">
+			<Button>
+				<Reload size="30" color="grey" />
+			</Button>
+			<Button>
+				<Grid size="30" color="grey" />
+			</Button>
+			<Button>
+				<Settings size="30" color="grey" />
+			</Button>
+			<Button>
+				<App size="30" color="grey" />
+			</Button>
+			<Button>
+				<User size="30" color="grey" />
+			</Button>
+		</div>
 	</div>
 </header>
-<div class="flex">
-	<aside class="flex w-64 flex-col justify-between bg-white">
+<div class="flex h-[calc(100vh-64px)]">
+	<aside class="flex w-12 flex-col justify-between bg-white sm:w-64">
 		<div class="m-t-12">
 			<Bar isActive={currentPage === 'Note'} name="Note" url="./" on:barclick={changeActive}>
 				<Lightbulb size="30" color="grey" />
@@ -107,11 +111,11 @@
 				<Trash size="30" color="grey" />
 			</Bar>
 		</div>
-		<div class="mb-4 ml-4 text-sm">
+		<div class="mb-4 ml-4 hidden text-sm sm:block">
 			<a href="https://ssl.gstatic.com/keep/licenses/web_client_licenses.txt">Licenze open-source</a>
 		</div>
 	</aside>
-	<main class="h-screen flex-1 overflow-y-scroll bg-white">
+	<main class="h-full flex-1 overflow-y-scroll bg-white">
 		<slot />
 	</main>
 </div>
