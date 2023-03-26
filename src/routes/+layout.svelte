@@ -36,7 +36,7 @@
 		);
 	};
 
-	export const derivedNotes = derived(globalNotes, () => {
+	const derivedNotes = derived(globalNotes, () => {
 		updateFiltered(searchQuery);
 	});
 

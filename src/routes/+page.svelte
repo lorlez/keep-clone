@@ -34,8 +34,20 @@
 		});
 	};
 
-	const togglePin = (e) => {
-		console.log('Inside toggle pin');
+	const editNote = (e) => {
+		mynotes = mynotes.map((n) => {
+			if (n.id === e.detail.id) return e.detail;
+			else return n;
+		});
+		window.localStorage.setItem('mynotes', JSON.stringify(mynotes));
+
+		datanotes = datanotes.map((n) => {
+			if (n.id === e.detail.id) return e.detail;
+			else return n;
+		});
+	};
+
+	const notePin = (e) => {
 		mynotes = mynotes.map((n) => {
 			if (n.id === e.detail) return { ...n, pinned: !n.pinned };
 			else return n;
@@ -43,7 +55,7 @@
 		window.localStorage.setItem('mynotes', JSON.stringify(mynotes));
 
 		datanotes = datanotes.map((n) => {
-			if (n.id === e.detail) return { ...n, pinned: !n.pinned };
+			if (n.id === e.detail.id) return { ...n, pinned: !n.pinned };
 			else return n;
 		});
 	};
@@ -55,10 +67,10 @@
 	{#if $filteredNotes.filter((n) => n.pinned).length > 0}
 		<h1 class="ml-12 mb-2 text-xs font-bold">APPUNTATE</h1>
 	{/if}
-	<div class="ml-12 mr-12 grid grid-cols-4">
+	<div class="ml-12 mr-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
 		{#each $filteredNotes as note (note.id)}
 			{#if note.pinned}
-				<Note {...note} on:notedel={deleteNote} on:notepin={togglePin} />
+				<Note {...note} on:notedel={deleteNote} on:notedit={editNote} on:notepin={notePin} />
 			{/if}
 		{/each}
 	</div>
@@ -66,10 +78,10 @@
 	{#if $filteredNotes.filter((n) => n.pinned).length > 0 && $filteredNotes.filter((n) => !n.pinned).length > 0}
 		<h1 class="ml-12 mb-2 text-xs font-bold">ALTRE</h1>
 	{/if}
-	<div class="ml-12 mr-12 grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 2xl:grid-cols-4">
+	<div class="ml-12 mr-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
 		{#each $filteredNotes as note (note.id)}
 			{#if !note.pinned}
-				<Note {...note} on:notedel={deleteNote} on:notepin={togglePin} />
+				<Note {...note} on:notedel={deleteNote} on:notedit={editNote} on:notepin={notePin} />
 			{/if}
 		{/each}
 	</div>

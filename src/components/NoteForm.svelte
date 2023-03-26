@@ -1,5 +1,5 @@
 <script>
-	import Check from 'svelte-material-icons/CheckboxMarkedoutline.svelte';
+	import Check from 'svelte-material-icons/CheckboxMarkedCirclePlusOutline.svelte';
 	import Brush from 'svelte-material-icons/BrushOutline.svelte';
 	import Image from 'svelte-material-icons/Image.svelte';
 	import Pin from 'svelte-material-icons/Pin.svelte';
@@ -51,7 +51,6 @@
 		fr.readAsDataURL(file);
 		fr.addEventListener('load', () => {
 			imgurl = fr.result;
-			console.log('Image url is ', imgurl);
 		});
 	};
 
