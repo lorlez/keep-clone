@@ -8,37 +8,71 @@
 	export let data;
 	let hovering = false;
 
-	let mynotes = [];
-	let datanotes = data.notes;
+	//let mynotes = [];
+	//let datanotes = data.notes;
 
 	onMount(() => {
-		mynotes = JSON.parse(window.localStorage.getItem('mynotes') || '[]');
+		//mynotes = JSON.parse(window.localStorage.getItem('mynotes') || '[]');
+		let storedNotes = JSON.parse(window.localStorage.getItem('mynotes') || '[]');
+		let dataNotes = data.notes;
+		console.log('dataNotes is', dataNotes);
+		let outNotes = storedNotes.filter((n) => {
+			let retFalse = false;
+			dataNotes.forEach((dn) => {
+				console.log('dataNote id is', dn.id, 'storedNote id is', n.id);
+				console.log('equality evaluates to', dn.id === n.id);
+				if (dn.id === n.id) retFalse = true;
+			});
+			if (retFalse) return false;
+			return true;
+		});
+		console.log('outNotes is', outNotes);
+		console.log('outNotes + dataNotes is', [...outNotes, ...dataNotes]);
+		globalNotes.set([...outNotes, ...dataNotes]);
 	});
 
 	$: {
-		globalNotes.set([...mynotes, ...datanotes]);
-		console.log('globalNotes updated');
+		//window.localStorage.setItem('mynotes', JSON.stringify($globalNotes));
+		//globalNotes.set([...mynotes, ...datanotes]);
+		console.log('globalNotes updated and localstorage set');
 	}
 
 	const addNote = (e) => {
 		console.log('adding NOTE');
-		mynotes = [e.detail, ...mynotes];
-		window.localStorage.setItem('mynotes', JSON.stringify(mynotes));
+		globalNotes.update((gn) => {
+			return [e.detail, ...gn];
+		});
+		window.localStorage.setItem('mynotes', JSON.stringify($globalNotes));
+		//mynotes = [e.detail, ...mynotes];
+		//window.localStorage.setItem('mynotes', JSON.stringify(mynotes));
 	};
 
 	const deleteNote = (e) => {
-		mynotes = mynotes.filter((n) => {
+		globalNotes.update((gn) => {
+			return gn.filter((n) => {
+				return n.id != e.detail;
+			});
+		});
+		window.localStorage.setItem('mynotes', JSON.stringify($globalNotes));
+		/*mynotes = mynotes.filter((n) => {
 			return n.id != e.detail;
 		});
 
 		window.localStorage.setItem('mynotes', JSON.stringify(mynotes));
 		datanotes = datanotes.filter((n) => {
 			return n.id != e.detail;
-		});
+		});*/
 	};
 
 	const editNote = (e) => {
-		mynotes = mynotes.map((n) => {
+		globalNotes.update((gn) => {
+			return gn.map((n) => {
+				if (n.id === e.detail.id) return e.detail;
+				else return n;
+			});
+		});
+		window.localStorage.setItem('mynotes', JSON.stringify($globalNotes));
+		/*mynotes = mynotes.map((n) => {
 			if (n.id === e.detail.id) return e.detail;
 			else return n;
 		});
@@ -47,20 +81,7 @@
 		datanotes = datanotes.map((n) => {
 			if (n.id === e.detail.id) return e.detail;
 			else return n;
-		});
-	};
-
-	const notePin = (e) => {
-		mynotes = mynotes.map((n) => {
-			if (n.id === e.detail) return { ...n, pinned: !n.pinned };
-			else return n;
-		});
-		window.localStorage.setItem('mynotes', JSON.stringify(mynotes));
-
-		datanotes = datanotes.map((n) => {
-			if (n.id === e.detail.id) return { ...n, pinned: !n.pinned };
-			else return n;
-		});
+		});*/
 	};
 
 	const dragstart = (event, draggedNote) => {
@@ -98,6 +119,7 @@
 			})
 		);
 
+		window.localStorage.setItem('mynotes', JSON.stringify($globalNotes));
 		//window.localStorage.setItem('mynotes', JSON.stringify(mynotes));
 	};
 </script>
@@ -109,9 +131,19 @@
 		<h1 class="ml-12 mb-2 text-xs font-bold">APPUNTATE</h1>
 	{/if}
 	<div class="ml-12 mr-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
-		{#each $filteredNotes as note (note.id)}
+		{#each $filteredNotes as note, index (note.id)}
 			{#if note.pinned}
-				<Note {...note} on:notedel={deleteNote} on:notedit={editNote} on:notepin={notePin} />
+				<div
+					on:dragstart={(e) => dragstart(e, note)}
+					draggable={true}
+					class="bg-transparent"
+					on:drop|preventDefault={(event) => drop(event, note)}
+					ondragover="return false"
+					on:dragenter={() => (hovering = index)}
+					class:is-active={hovering === index}
+				>
+					<Note {...note} on:notedel={deleteNote} on:notedit={editNote} />
+				</div>
 			{/if}
 		{/each}
 	</div>
@@ -131,7 +163,7 @@
 					on:dragenter={() => (hovering = index)}
 					class:is-active={hovering === index}
 				>
-					<Note {...note} on:notedel={deleteNote} on:notedit={editNote} on:notepin={notePin} />
+					<Note {...note} on:notedel={deleteNote} on:notedit={editNote} />
 				</div>
 			{/if}
 		{/each}

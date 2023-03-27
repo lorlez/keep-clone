@@ -29,11 +29,16 @@
 	};
 
 	const updateFiltered = (srcq) => {
-		filteredNotes.set(
-			$globalNotes.filter((n) => {
-				return n.body.toLowerCase().includes(srcq.toLowerCase()) || n.title.toLowerCase().includes(srcq.toLowerCase());
-			})
-		);
+		if ($globalNotes != []) {
+			console.log('globalNotes is', $globalNotes);
+			filteredNotes.set(
+				$globalNotes.filter((n) => {
+					return (
+						n.body.toLowerCase().includes(srcq.toLowerCase()) || n.title.toLowerCase().includes(srcq.toLowerCase())
+					);
+				})
+			);
+		}
 	};
 
 	const derivedNotes = derived(globalNotes, () => {

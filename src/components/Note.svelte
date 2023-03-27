@@ -3,7 +3,6 @@
 	import Pin from 'svelte-material-icons/Pin.svelte';
 	import Trash from 'svelte-material-icons/Delete.svelte';
 	import DelImage from 'svelte-material-icons/ImageOff.svelte';
-	import { isDragging } from '../stores/NoteStore';
 
 	export let id = 0;
 	export let title = '';
@@ -49,9 +48,22 @@
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
-<div class="m-4 w-64 overflow-hidden rounded-lg border border-slate-300 bg-white" on:click|capture={handleOpenForm}>
+<div class="m-4 w-64 overflow-hidden rounded-lg border border-slate-300" on:click|capture={handleOpenForm}>
+	{#if imgurl}
+		<img draggable={false} class="w-full" src={imgurl} alt="content missing" />
+	{/if}
 	{#if isEditing}
-		<div class="flex justify-between ">
+		<textarea class="ml-2 mr-2 w-60 text-lg font-semibold" bind:value={title} placeholder="Titolo" />
+	{:else if title}
+		<h1 class="ml-2 mr-2 w-60 text-lg font-semibold">{title}</h1>
+	{/if}
+	{#if isEditing}
+		<textarea class="flex-1" bind:value={body} placeholder="Nota" />
+	{:else}
+		<p class="ml-2 mr-2">{body}</p>
+	{/if}
+	{#if isEditing}
+		<div class="flex justify-between">
 			<input class="appearance-none" type="file" on:change={(e) => addImg(e.target.files[0])} />
 			<Button callback={handleDel}>
 				<Trash color="gray" size="28" />
@@ -68,19 +80,5 @@
 				<h1 class="text-sm">CHIUDI</h1>
 			</Button>
 		</div>
-	{/if}
-
-	{#if imgurl}
-		<img draggable={false} class="w-full" src={imgurl} alt="content missing" />
-	{/if}
-	{#if isEditing}
-		<input class="w-full" type="text" bind:value={title} placeholder="Titolo" />
-	{:else if title}
-		<h1 class="text-lg font-bold">{title}</h1>
-	{/if}
-	{#if isEditing}
-		<textarea class="flex-1" bind:value={body} placeholder="Nota" />
-	{:else}
-		<p>{body}</p>
 	{/if}
 </div>
