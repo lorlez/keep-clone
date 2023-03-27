@@ -49,6 +49,8 @@
 			imgurl = fr.result;
 		});
 	};
+
+	$: console.log('body is', body);
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -65,7 +67,7 @@
 	{/if}
 	{#if isEditing}
 		<textarea
-			class="ml-2 mr-2 w-full overflow-hidden text-lg font-semibold outline-none"
+			class="ml-2 mr-2 w-[240px] overflow-hidden  text-lg font-semibold outline-none"
 			bind:value={title}
 			placeholder="Titolo"
 		/>
@@ -74,12 +76,12 @@
 	{/if}
 	{#if isEditing}
 		<textarea
-			class="ml-2 mr-2 mt-0 h-full w-full resize-y overflow-hidden outline-none"
+			class="ml-2 mr-2 mt-0 h-60 w-[240px] resize-y overflow-hidden outline-none"
 			bind:value={body}
 			placeholder="Nota"
 		/>
 	{:else}
-		<p class="ml-2 mr-2 font-sans">{body}</p>
+		<pre class="ml-2 mr-2 whitespace-pre-wrap font-sans">{body}</pre>
 	{/if}
 	{#if isEditing}
 		<div class="flex justify-between">

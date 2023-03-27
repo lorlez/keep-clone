@@ -135,16 +135,13 @@
 		<h1 class="ml-12 mb-2 text-xs font-bold">APPUNTATE</h1>
 	{/if}
 	<div class="ml-12 mr-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
-		{#each $filteredNotes as note, index (note.id)}
+		{#each $filteredNotes as note (note.id)}
 			{#if note.pinned}
 				<div
 					on:dragstart={(e) => dragstart(e, note)}
 					draggable={true}
-					class="bg-transparent"
 					on:drop|preventDefault={(event) => drop(event, note)}
 					ondragover="return false"
-					on:dragenter={() => (hovering = index)}
-					class:is-active={hovering === index}
 				>
 					<Note {...note} isEditing={note.id === $editingID} on:notedel={deleteNote} on:notedit={editNote} />
 				</div>
@@ -156,16 +153,13 @@
 		<h1 class="ml-12 mb-2 text-xs font-bold">ALTRE</h1>
 	{/if}
 	<div class="ml-12 mr-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
-		{#each $filteredNotes as note, index (note.id)}
+		{#each $filteredNotes as note (note.id)}
 			{#if !note.pinned}
 				<div
 					on:dragstart={(e) => dragstart(e, note)}
-					draggable={true}
-					class="bg-transparent"
+					draggable={$editingID === -1}
 					on:drop|preventDefault={(event) => drop(event, note)}
 					ondragover="return false"
-					on:dragenter={() => (hovering = index)}
-					class:is-active={hovering === index}
 				>
 					<Note {...note} isEditing={note.id === $editingID} on:notedel={deleteNote} on:notedit={editNote} />
 				</div>
