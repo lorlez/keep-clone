@@ -4,6 +4,7 @@
 	import Image from 'svelte-material-icons/Image.svelte';
 	import Pin from 'svelte-material-icons/Pin.svelte';
 	import DelImage from 'svelte-material-icons/ImageOff.svelte';
+	import FileButton from './FileButton.svelte';
 
 	import Button from '../components/Button.svelte';
 
@@ -89,12 +90,9 @@
 			<!-- svelte-ignore a11y-autofocus -->
 			<textarea class="w-full focus:outline-none" bind:value={body} autofocus placeholder="Scrivi una nota..." />
 			<div class="flex justify-between">
-				<Button>
-					<Image color="grey" size="28" />
-				</Button>
-				<input type="file" on:change={(e) => addImg(e.target.files[0])} />
+				<FileButton callback={addImg} />
 				<Button callback={handleClose}>
-					<h1>Chiudi</h1>
+					<h1 class="text-xs font-semibold">CHIUDI</h1>
 				</Button>
 			</div>
 		</form>
