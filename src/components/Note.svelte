@@ -11,7 +11,7 @@
 	export let body = '';
 	export let imgurl = '';
 	export let pinned = false;
-	let isEditing = false;
+	export let isEditing = false;
 
 	import { createEventDispatcher } from 'svelte';
 	let dispatch = createEventDispatcher();
@@ -30,7 +30,7 @@
 
 	const handleOpenForm = () => {
 		editingID.set(id);
-		if (!isEditing) isEditing = true;
+		//if (!isEditing) isEditing = true;
 	};
 
 	const handleCloseForm = () => {

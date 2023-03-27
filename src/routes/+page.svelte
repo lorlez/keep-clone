@@ -146,7 +146,7 @@
 					on:dragenter={() => (hovering = index)}
 					class:is-active={hovering === index}
 				>
-					<Note {...note} on:notedel={deleteNote} on:notedit={editNote} />
+					<Note {...note} isEditing={note.id === $editingID} on:notedel={deleteNote} on:notedit={editNote} />
 				</div>
 			{/if}
 		{/each}
@@ -167,7 +167,7 @@
 					on:dragenter={() => (hovering = index)}
 					class:is-active={hovering === index}
 				>
-					<Note {...note} on:notedel={deleteNote} on:notedit={editNote} />
+					<Note {...note} isEditing={note.id === $editingID} on:notedel={deleteNote} on:notedit={editNote} />
 				</div>
 			{/if}
 		{/each}
