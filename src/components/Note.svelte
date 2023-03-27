@@ -71,7 +71,7 @@
 	{/if}
 
 	{#if imgurl}
-		<img class="w-full" src={imgurl} alt="content missing" />
+		<img draggable={false} class="w-full" src={imgurl} alt="content missing" />
 	{/if}
 	{#if isEditing}
 		<input class="w-full" type="text" bind:value={title} placeholder="Titolo" />

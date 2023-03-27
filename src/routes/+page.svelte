@@ -3,8 +3,10 @@
 	import NoteForm from '../components/NoteForm.svelte';
 	import { onMount } from 'svelte';
 	import { globalNotes, filteredNotes } from '../stores/NoteStore';
+	import { flip } from 'svelte/animate';
 
 	export let data;
+	let hovering = false;
 
 	let mynotes = [];
 	let datanotes = data.notes;
@@ -15,6 +17,7 @@
 
 	$: {
 		globalNotes.set([...mynotes, ...datanotes]);
+		console.log('globalNotes updated');
 	}
 
 	const addNote = (e) => {
@@ -59,6 +62,44 @@
 			else return n;
 		});
 	};
+
+	const dragstart = (event, draggedNote) => {
+		event.dataTransfer.effectAllowed = 'move';
+		event.dataTransfer.dropEffect = 'move';
+		event.dataTransfer.setData('text/plain', JSON.stringify(draggedNote)); //start
+	};
+
+	const drop = (event, targetNote) => {
+		let targetIndex = -1;
+		let draggedIndex = -1;
+		let draggedNote = JSON.parse(event.dataTransfer.getData('text/plain'));
+
+		$globalNotes.forEach((n, i) => {
+			if (n.id === draggedNote.id) {
+				draggedIndex = i;
+				console.log('found draggedItem index', draggedIndex);
+			} else if (n.id === targetNote.id) {
+				targetIndex = i;
+				console.log('found targetItem index', targetIndex);
+			}
+		});
+
+		globalNotes.set(
+			$globalNotes.map((n, i) => {
+				if (i === targetIndex) {
+					console.log('swapped target with dragged');
+					return draggedNote;
+				} else if (i === draggedIndex) {
+					console.log('swapped dragged with target');
+					return targetNote;
+				} else {
+					return n;
+				}
+			})
+		);
+
+		//window.localStorage.setItem('mynotes', JSON.stringify(mynotes));
+	};
 </script>
 
 <div class="ml-auto mr-auto">
@@ -79,9 +120,19 @@
 		<h1 class="ml-12 mb-2 text-xs font-bold">ALTRE</h1>
 	{/if}
 	<div class="ml-12 mr-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
-		{#each $filteredNotes as note (note.id)}
+		{#each $filteredNotes as note, index (note.id)}
 			{#if !note.pinned}
-				<Note {...note} on:notedel={deleteNote} on:notedit={editNote} on:notepin={notePin} />
+				<div
+					on:dragstart={(e) => dragstart(e, note)}
+					draggable={true}
+					class="bg-transparent"
+					on:drop|preventDefault={(event) => drop(event, note)}
+					ondragover="return false"
+					on:dragenter={() => (hovering = index)}
+					class:is-active={hovering === index}
+				>
+					<Note {...note} on:notedel={deleteNote} on:notedit={editNote} on:notepin={notePin} />
+				</div>
 			{/if}
 		{/each}
 	</div>

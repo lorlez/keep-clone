@@ -1,5 +1,5 @@
 <script>
-	import Check from 'svelte-material-icons/CheckboxMarkedCirclePlusOutline.svelte';
+	import Check from 'svelte-material-icons/CheckboxMarkedOutline.svelte';
 	import Brush from 'svelte-material-icons/BrushOutline.svelte';
 	import Image from 'svelte-material-icons/Image.svelte';
 	import Pin from 'svelte-material-icons/Pin.svelte';
